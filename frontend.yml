@@ -20,8 +20,8 @@
 
     - name: Copy nginx config file
       ansible.builtin.copy:
-        src: /srv/myfiles/foo.conf
-        dest: /etc/foo.conf
+        src: /etc/nginx/default.d/expense.conf
+        dest: expense.conf
 
     - name: Start service nginx
       ansible.builtin.service:
