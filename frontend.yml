@@ -23,10 +23,10 @@
         dest: /usr/share/nginx/html/
         remote_src: yes
 
-#    - name: Copy nginx config file
-#      ansible.builtin.copy:
-#        src: expense.conf
-#        dest: /etc/nginx/default.d/expense.conf
+    - name: Copy nginx config file
+      ansible.builtin.copy:
+        src: expense.conf
+        dest: /etc/nginx/default.d/expense.conf
 
     - name: Start service nginx
       ansible.builtin.service:
