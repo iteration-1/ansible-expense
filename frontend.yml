@@ -12,7 +12,7 @@
         path: /usr/share/nginx/html/
         state: absent
 
-    - name: remove old http
+    - name: add new http
       ansible.builtin.file:
         path: /usr/share/nginx/html/
         state: directory
@@ -23,10 +23,10 @@
         dest: /usr/share/nginx/html/
         remote_src: yes
 
-    - name: Copy nginx config file
-      ansible.builtin.copy:
-        src: /etc/nginx/default.d/expense.conf
-        dest: expense.conf
+#    - name: Copy nginx config file
+#      ansible.builtin.copy:
+#        src: /etc/nginx/default.d/expense.conf
+#        dest: expense.conf
 
     - name: Start service nginx
       ansible.builtin.service:
