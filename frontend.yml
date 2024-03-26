@@ -6,8 +6,30 @@
       ansible.builtin.dnf:
         name: nginx
         state: latest
+
+    - name: remove old http
+      ansible.builtin.file:
+        path: /usr/share/nginx/html/
+        state: absent
+
+    - name: create new nginx file
+      ansible.builtin.file:
+        path: /usr/share/nginx/html/
+        state: absent
+
+    - name: add new html
+      ansible.builtin.unarchive:
+        src: https://expense-artifacts.s3.amazonaws.com/expense-frontend-v2.zip
+        dest: /usr/share/nginx/html/
+        remote_src: yes
+
+    - name: Copy nginx config file
+      ansible.builtin.copy:
+        src: /srv/myfiles/foo.conf
+        dest: /etc/foo.conf
+
     - name: Start service nginx
       ansible.builtin.service:
         name: nginx
-        state: started
+        state: restarted
 
