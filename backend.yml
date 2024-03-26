@@ -2,6 +2,13 @@
   hosts: all
   become: true
   tasks:
+
+    - name: remove old nodejs module
+      ansible.builtin.shell: dnf module disable nodejs -y
+
+    - name: enable new nodejs module
+      ansible.builtin.shell: dnf module enable nodejs:20 -y
+
     - name: Install nodejs
       ansible.builtin.dnf:
         name: nodejs
@@ -10,6 +17,11 @@
     - name: Add expense user
       ansible.builtin.user:
         name: expense
+
+    - name: remove old app dir
+      ansible.builtin.file:
+        path: /app
+        state: absent
 
     - name: add a app dir
       ansible.builtin.file:
@@ -24,13 +36,30 @@
 
     - name: Download dependencies
       community.general.npm:
-        name:
         path: /app
+        state: latest
 
-    - name: Copy nginx config file
+    - name: Copy backend service file
       ansible.builtin.copy:
         src: backend.service
         dest: /etc/systemd/system/backend.service
+
+    - name: Install mysql
+      ansible.builtin.pip:
+        name:
+        - PyMySQL
+        - cryptography
+        executable: pip3.9
+
+    - name: load schema
+      community.mysql.mysql_db:
+        state: import
+        name: all
+        target: /app/schema/backend.sql
+        login_user: root
+        login_password: ExpenseApp@1
+        login_host: mysql-dev.pappik.online
+
 
     - name: systemd service
       ansible.builtin.systemd:
@@ -38,11 +67,3 @@
         enabled: yes
         daemon_reload: true
         state: restarted
-
-    - name: Install mysql
-      ansible.builtin.dnf:
-        name: mysql
-        state: installed
-
-    - name: load schema
-      ansible.builtin.shell: mysql -h mysql-dev.pappik.online -uroot -pExpenseApp@1 < /app/schema/backend.sql
