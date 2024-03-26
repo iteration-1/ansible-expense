@@ -25,8 +25,8 @@
 
 #    - name: Copy nginx config file
 #      ansible.builtin.copy:
-#        src: /etc/nginx/default.d/expense.conf
-#        dest: expense.conf
+#        src: expense.conf
+#        dest: /etc/nginx/default.d/expense.conf
 
     - name: Start service nginx
       ansible.builtin.service:
