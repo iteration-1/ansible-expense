@@ -7,17 +7,17 @@
         name: nginx
         state: latest
 
-    - name: remove old http
+    - name: remove old html folder
       ansible.builtin.file:
         path: /usr/share/nginx/html/
         state: absent
 
-    - name: add new http
+    - name: add new html folder
       ansible.builtin.file:
         path: /usr/share/nginx/html/
         state: directory
 
-    - name: add new html
+    - name: add expense content
       ansible.builtin.unarchive:
         src: https://expense-artifacts.s3.amazonaws.com/expense-frontend-v2.zip
         dest: /usr/share/nginx/html/
