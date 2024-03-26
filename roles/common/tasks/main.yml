@@ -1,0 +1,2 @@
+- name: create machine name
+  ansible.builtin.shell: set-prompt {{ component }}-{{ dev }}
