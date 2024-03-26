@@ -1,36 +1,5 @@
 - name: frontend setup
   hosts: all
   become: true
-  tasks:
-    - name: Install Nginx
-      ansible.builtin.dnf:
-        name: nginx
-        state: latest
-
-    - name: remove old html folder
-      ansible.builtin.file:
-        path: /usr/share/nginx/html/
-        state: absent
-
-    - name: add new html folder
-      ansible.builtin.file:
-        path: /usr/share/nginx/html/
-        state: directory
-
-    - name: add expense content
-      ansible.builtin.unarchive:
-        src: https://expense-artifacts.s3.amazonaws.com/expense-frontend-v2.zip
-        dest: /usr/share/nginx/html/
-        remote_src: yes
-
-    - name: Copy nginx config file
-      ansible.builtin.copy:
-        src: expense.conf
-        dest: /etc/nginx/default.d/expense.conf
-
-    - name: Start service nginx
-      ansible.builtin.service:
-        name: nginx
-        state: restarted
-        enabled: yes
-
+  roles:
+    - frontend
